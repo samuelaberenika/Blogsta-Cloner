@@ -1,10 +1,15 @@
+<div align="center">
+
 # Blogsta-Cloner
 
-![GitHub release (latest by date)]()
-![GitHub Marketplace]()
-![GitHub stars]()
+Generate Podcast RSS feeds from YAML data files effortlessly
 
-Blogsta-Cloner is a GitHub Action that generates Podcast RSS feeds from YAML configuration files, allowing you to manage your podcast as code.
+[![Release](https://img.shields.io/badge/RELEASE-v1.0-0078d4?style=flat-square&labelColor=555d6b)](https://github.com/samuelaberenika/Blogsta-Cloner/releases)
+[![GitHub Marketplace](https://img.shields.io/badge/Marketplace-Blogsta--Cloner-24292f?style=flat-square&logo=github&logoColor=white)](https://github.com/marketplace)
+[![Repo](https://img.shields.io/badge/REPO-Blogsta--Cloner-0078d4?style=flat-square&labelColor=555d6b)](https://github.com/samuelaberenika/Blogsta-Cloner)
+[![License](https://img.shields.io/badge/LICENSE-MIT-2da44e?style=flat-square&labelColor=555d6b)](./LICENSE)
+
+</div>
 
 ---
 
