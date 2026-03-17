@@ -13,9 +13,9 @@ Generate Podcast RSS feeds from YAML data effortlessly.
 
 ---
 
-So I had a podcast. I had audio files. I had images. What I didn't have was a clean way to manage the RSS feed without touching XML every single time I uploaded an episode. That gets old fast.
+You have a podcast. You have audio files. You have images. What you don't have was a clean way to manage the RSS feed without touching XML every single time you upload an episode. That gets old fast.
 
-Blogsta-Cloner is the GitHub Action I built to fix that. You keep your podcast data in a `feed.yaml` file — titles, descriptions, episode details, all the stuff you'd have to hand-code into XML anyway — and the action generates a valid `podcast.xml` RSS feed automatically whenever you push. No XML wrangling. No manual updates. Just YAML and a commit.
+Blogsta-Cloner is a GitHub Action I built to fix that. You keep your podcast data in a `feed.yaml` file — titles, descriptions, episode details, all the stuff you'd have to hand-code into XML anyway — and the action generates a valid `podcast.xml` RSS feed automatically whenever you push. No XML wrangling. No manual updates. Just YAML and a commit.
 
 It came out of [Blogsta](https://github.com/samuelaberenika/blogsta), which I originally built as a one-repo setup for my own podcast. Blogsta-Cloner pulls that same Python-powered feed generation into a reusable GitHub Action so anyone can drop it into their own repo.
 
