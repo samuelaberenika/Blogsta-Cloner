@@ -2,10 +2,10 @@
 
 # Blogsta-Cloner
 
-Generate Podcast RSS feeds from YAML data files effortlessly
+Generate Podcast RSS feeds from YAML data effortlessly.
 
 [![Release](https://img.shields.io/badge/RELEASE-v1.0-0078d4?style=flat-square&labelColor=555d6b)](https://github.com/samuelaberenika/Blogsta-Cloner/releases)
-[![GitHub Marketplace](https://img.shields.io/badge/Marketplace-Blogsta--Cloner-24292f?style=flat-square&logo=github&logoColor=white)](https://github.com/marketplace)
+[![GitHub Marketplace](https://img.shields.io/badge/Marketplace-Blogsta--Cloner-24292f?style=flat-square&logo=github&logoColor=white)](https://github.com/marketplace/actions/blogsta-cloner)
 [![Repo](https://img.shields.io/badge/REPO-Blogsta--Cloner-0078d4?style=flat-square&labelColor=555d6b)](https://github.com/samuelaberenika/Blogsta-Cloner)
 [![License](https://img.shields.io/badge/LICENSE-MIT-2da44e?style=flat-square&labelColor=555d6b)](./LICENSE)
 
@@ -13,135 +13,92 @@ Generate Podcast RSS feeds from YAML data files effortlessly
 
 ---
 
-## 🚀 Features
+So I had a podcast. I had audio files. I had images. What I didn't have was a clean way to manage the RSS feed without touching XML every single time I uploaded an episode. That gets old fast.
 
-* YAML to RSS — Convert YAML files into Podcast RSS 2.0 feeds
-* Automated Updates — Automatically regenerate your feed whenever you push changes to your repository
-* Infrastructure as Code — Keep your podcast metadata version-controlled and history tracked
-* Easy Hosting — Works perfectly with GitHub Pages to host your generated feed for free
+Blogsta-Cloner is the GitHub Action I built to fix that. You keep your podcast data in a `feed.yaml` file — titles, descriptions, episode details, all the stuff you'd have to hand-code into XML anyway — and the action generates a valid `podcast.xml` RSS feed automatically whenever you push. No XML wrangling. No manual updates. Just YAML and a commit.
+
+It came out of [Blogsta](https://github.com/samuelaberenika/blogsta), which I originally built as a one-repo setup for my own podcast. Blogsta-Cloner pulls that same Python-powered feed generation into a reusable GitHub Action so anyone can drop it into their own repo.
 
 ---
 
-## 📖 Usage
+## How it works
 
-Create a workflow file in your repository:
+You write your podcast metadata in `feed.yaml`. Something like:
 
-.github/workflows/main.yml
+```yaml
+title: My Podcast
+description: A show about things I find interesting
+link: https://example.com
+author: Your Name
+episodes:
+  - title: Episode 1
+    description: The first one
+    audio: audio/ep1.mp3
+    image: images/ep1.jpg
+    date: 2024-01-15
+```
 
-### Example Workflow
+The action reads that file and runs `feed.py` to spit out a `podcast.xml` that any podcast app can consume. Commit, push, done.
 
-This workflow listens for pushes to the main branch, generates feed.xml from your YAML file, and commits the result.
+---
+
+## Setup
+
+Add this to your workflow (e.g. `.github/workflows/generate-feed.yml`):
 
 ```yaml
 name: Generate Podcast Feed
 
 on:
   push:
-    branches: ["main"]
-  workflow_dispatch:
+    branches: [main]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-      - name: Generate Podcast Feed
+      - name: Generate RSS Feed
         uses: samuelaberenika/Blogsta-Cloner@v1.0
-        with:
-          source_file: "podcast.yaml"
-          output_file: "feed.xml"
 
-      - name: Commit Generated Feed
+      - name: Commit and push feed
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add feed.xml
-          git commit -m "Update podcast feed" || echo "No changes to commit"
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add podcast.xml
+          git commit -m "Update podcast feed" || exit 0
           git push
 ```
 
----
-
-## ⚙️ Configuration
-
-### Inputs
-
-| Input       | Description                                          | Required | Default      |
-| ----------- | ---------------------------------------------------- | -------- | ------------ |
-| source_file | Path to the YAML source file containing podcast data | Yes      | podcast.yaml |
-| output_file | Filename for the generated RSS feed                  | No       | feed.xml     |
+That's genuinely it. The action picks up your `feed.yaml`, generates `podcast.xml`, and you commit the result back to the repo.
 
 ---
 
-## 📄 YAML File Structure
+## What you need in your repo
 
-Create a `source_file` (for example `podcast.yaml`) in your repository root.
+- `feed.yaml` — your podcast metadata (see the example above)
+- `audio/` — your episode audio files
+- `images/` — episode artwork
 
-```yaml
-title: "My Awesome Podcast"
-description: "A podcast about technology and coding."
-link: "https://example.com"
-language: "en-us"
-author: "Samuel Aberenika"
-email: "email@example.com"
-category: "Technology"
-image: "https://example.com/cover.png" # Optional podcast cover art
-
-episodes:
-  - title: "Episode 1: Getting Started"
-    description: "Introduction to the series."
-    pubDate: "2023-10-27"
-    url: "https://example.com/audio/ep1.mp3"
-    length: "12345678"
-    type: "audio/mpeg"
-
-  - title: "Episode 2: Deep Dive"
-    description: "We dive deeper into the code."
-    pubDate: "2023-11-03"
-    url: "https://example.com/audio/ep2.mp3"
-    length: "9876543"
-    type: "audio/mpeg"
-```
+The output is `podcast.xml` at the root of your repo. Host your repo via GitHub Pages and point your podcast app at `https://yourusername.github.io/yourrepo/podcast.xml`.
 
 ---
 
-## 🛠️ Contributing
+## Why YAML and not a dashboard?
 
-Contributions are welcome. If you have suggestions for improvements or find a bug, feel free to open an issue or submit a pull request.
-
-1. Fork the repository
-2. Create your feature branch
-
-```
-git checkout -b feature/AmazingFeature
-```
-
-3. Commit your changes
-
-```
-git commit -m "Add some AmazingFeature"
-```
-
-4. Push to the branch
-
-```
-git push origin feature/AmazingFeature
-```
-
-5. Open a Pull Request
+Because a `git commit` is already your version history, your backup, and your deployment pipeline. You don't need a separate CMS for a podcast feed. YAML is readable, diffable, and it lives right next to your audio files.
 
 ---
 
-## 📄 License
+## Built on
 
-This project is licensed under the MIT License.
-See the `LICENSE` file for details.
+- [Blogsta](https://github.com/samuelaberenika/blogsta) — the original single-repo podcast setup this action is based on
+- Python — `feed.py` does the actual XML generation
+- GitHub Actions — handles the automation
 
 ---
 
-## ⚠️ Disclaimer
+## License
 
-This action is provided by a third party and is not certified by GitHub.
+MIT — do whatever you want with it.
