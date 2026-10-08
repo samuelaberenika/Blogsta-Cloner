@@ -19,7 +19,7 @@ Blogsta-Cloner is a GitHub Action I built to fix that. You keep your podcast dat
 
 It came out of [Blogsta](https://github.com/samuelaberenika/blogsta), which I originally built as a one-repo setup for my own podcast. Blogsta-Cloner pulls that same Python-powered feed generation into a reusable GitHub Action so anyone can drop it into their own repo.
 
----
+
 
 ## How it works
 
@@ -40,7 +40,7 @@ episodes:
 
 The action reads that file and runs `feed.py` to spit out a `podcast.xml` that any podcast app can consume. Commit, push, done.
 
----
+
 
 ## Setup
 
@@ -73,7 +73,7 @@ jobs:
 
 That's genuinely it. The action picks up your `feed.yaml`, generates `podcast.xml`, and you commit the result back to the repo.
 
----
+
 
 ## What you need in your repo
 
@@ -83,13 +83,13 @@ That's genuinely it. The action picks up your `feed.yaml`, generates `podcast.xm
 
 The output is `podcast.xml` at the root of your repo. Host your repo via GitHub Pages and point your podcast app at `https://yourusername.github.io/yourrepo/podcast.xml`.
 
----
+
 
 ## Why YAML and not a dashboard?
 
 Because a `git commit` is already your version history, your backup, and your deployment pipeline. You don't need a separate CMS for a podcast feed. YAML is readable, diffable, and it lives right next to your audio files.
 
----
+
 
 ## Built on
 
