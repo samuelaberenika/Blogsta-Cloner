@@ -97,7 +97,7 @@ Because a `git commit` is already your version history, your backup, and your de
 - Python — `feed.py` does the actual XML generation
 - GitHub Actions — handles the automation
 
----
+
 
 ## License
 
